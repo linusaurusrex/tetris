@@ -64,24 +64,46 @@ public class Shape implements Iterable<Pair> {
     private static final Pair DOWN = new Pair(1, 0);
     private static final Pair LEFT = new Pair(0, -1);
     private static final Pair RIGHT = new Pair(0, 1);
+
     private List<Pair> squares;
     private List<Pair> oldSquares;
     private Color color;
     private int i;
+
+    /**
+     * Constructs a random shape.
+     */
     public Shape() {
         i = StdRandom.uniform(SHAPES.size());
         color = COLORS.get(i);
         squares = SHAPES.get(i);
     }
 
+    /**
+     * Moves the shape in the given direction.
+     */
     public void shift(Pair direction) {
         oldSquares = squares;squares = new ArrayList<Pair>();
         for (Pair square : oldSquares) squares.add(square.plus(direction));
     }
+
+    /**
+     * Returns the Shape's location Pairs.
+     */
+    public List<Pair> getSquares() {
+        return squares;
+    }
+    /**
+     * Restores the Shape's previous location.
+     */
     public void commitMove(boolean valid) {
         if (!valid && oldSquares != null) squares = oldSquares;
     }
 
+    /**
+     * Rotates the shape clockwise about its center.
+     * Does not do anything yet.
+     */
     public void rotate() {
         if (1 == 1) return;
         List<Pair> newSquares = new ArrayList<Pair>();
@@ -109,11 +131,18 @@ public class Shape implements Iterable<Pair> {
         }
     }
 
+    /**
+     * Returns an Iterator for the Shape's location Pairs.
+     * @return
+     */
     @Override
     public Iterator<Pair> iterator() {
         return squares.iterator();
     }
 
+    /**
+     * Returns the color.
+     */
     public Color getColor() {
         return color;
     }
