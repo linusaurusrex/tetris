@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
 
 public class ShapeTest {
 //    Pieces can shift left, right, and down in the grid.

@@ -4,11 +4,10 @@ import java.util.Arrays;
 public class Board {
     private static final int ROWS = 20;
     private static final int COLUMNS = 10;
-    private Color[][] board = new Color[ROWS][COLUMNS]; // Grid of settled shapes
-    private Shape fallingShape;
+    private Color[][] board = new Color[ROWS][COLUMNS];
 
     /**
-     * Returns whether the current piece can move in the given direction.
+     * Returns whether the current piece is in a valid position.
      */
     public boolean check(Shape shape) {
         for (Pair square : shape)
@@ -17,36 +16,57 @@ public class Board {
         return true;
     }
 
+    /**
+     * Sets the given square in the grid.
+     */
     public void setSquare(Pair square, Color color) {
         board[square.getRow()][square.getColumn()] = color;
     }
 
+    /**
+     * Returns the requested square from the grid.
+     */
     public Color getSquare(Pair square) {
         return board[square.getRow()][square.getColumn()];
     }
 
+    /**
+     * Returns whether the given square is in the grid.
+     */
     public boolean isValid(Pair square) {
         int r = square.getRow();
         int c = square.getColumn();
         return r >= 0 && r < ROWS && c >= 0 && c < COLUMNS;
     }
+
+    /**
+     * Clears full rows and shifts rows down to fill empty rows.
+     */
     void clear() {
         for (int r = ROWS - 1; r > 0; r--) {
-            if (full(board[r])) board[r] = new Color[COLUMNS];
-            else if (empty(board[r])) {
+            if (full(r)) board[r] = new Color[COLUMNS];
+            else if (empty(r)) {
                 board[r] = board[r - 1];
                 board[r - 1] = new Color[COLUMNS];
             }
         }
     }
-    public boolean full(Color[] row) {
-        for (Color color : row)
+
+    /**
+     * Returns whether the given row is full.
+     */
+    public boolean full(int row) {
+        for (Color color : board[row])
             if (color == null)
                 return false;
         return true;
     }
-    public boolean empty(Color[] row) {
-        for (Color color : row)
+
+    /**
+     * Returns whether the given row is empty.
+     */
+    public boolean empty(int row) {
+        for (Color color : board[row])
             if (color != null)
                 return false;
         return true;

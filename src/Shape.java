@@ -1,8 +1,5 @@
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.awt.Color;
+import java.util.*;
 
 public class Shape implements Iterable<Pair> {
     // All possible configurations of 4 squares

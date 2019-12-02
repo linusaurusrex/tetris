@@ -26,9 +26,9 @@ public class Tetris {
     public void settle() {
         for (Pair square : shape)
             board.setSquare(square, shape.getColor());
-        board.clear();
         shape = null;
         draw();
+        board.clear();
         StdDraw.pause(delay);
         shape = new Shape();
         if (!board.check(shape)) gameOver = true;
