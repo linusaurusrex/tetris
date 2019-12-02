@@ -1,3 +1,4 @@
+// From Lines of Action by Linus Brogan and Lauren Keegan
 import java.util.Objects;
 
 public class Pair {
@@ -5,7 +6,7 @@ public class Pair {
     private int column;
 
     @Override
-    public String toString() {//concatenates string with desired values
+    public String toString() {
         return "(" + this.row + ", " + this.column + ")";
     }
 

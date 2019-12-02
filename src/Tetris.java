@@ -11,7 +11,7 @@ public class Tetris {
     private boolean gameOver = false;
     private int delay = 200;
     private Board board = new Board();
-    private Shape shape = new Shape(board, this);
+    private Shape shape = new Shape();
 
     /**
      * Constructs and runs a new game.
@@ -24,13 +24,14 @@ public class Tetris {
      * Sets the falling shape's final location in the board and sets the next falling shape.
      */
     public void settle() {
-        shape.settle();
+        for (Pair square : shape)
+            board.setSquare(square, shape.getColor());
         board.clear();
         shape = null;
         draw();
         StdDraw.pause(delay);
-        shape = new Shape(board, this);
-        if (shape.overlap) gameOver = true;
+        shape = new Shape();
+        if (!board.check(shape)) gameOver = true;
     }
 
     /**
@@ -45,6 +46,9 @@ public class Tetris {
             board.clear();
             handleKeys();
             shape.shift(new Pair(1, 0));
+            boolean valid = board.check(shape);
+            shape.commitMove(valid);
+            if (!valid) settle();
         }
         StdOut.println("OVER");
     }
@@ -88,17 +92,32 @@ public class Tetris {
         StdDraw.show();
     }
 
+    /**
+     * Accepts user input.
+     */
     void handleKeys() {
-        if (StdDraw.isKeyPressed(KeyEvent.VK_UP))
+        if (StdDraw.isKeyPressed(KeyEvent.VK_UP)) {
             shape.rotate();
-        if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT))
+            shape.commitMove(board.check(shape));
+        }
+        if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT)) {
             shape.shift(new Pair(0, -1));
-        if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN))
+            shape.commitMove(board.check(shape));
+        }
+        if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
             shape.shift(new Pair(1, 0));
-        if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT))
+            boolean valid = board.check(shape);
+            shape.commitMove(valid);
+            if (!valid) settle();
+        }
+        if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT)) {
             shape.shift(new Pair(0, 1));
-        if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE))
+            shape.commitMove(board.check(shape));
+        }
+        if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) { // Change to drop piece
             shape.shift(new Pair(1, 0));
+            shape.commitMove(board.check(shape));
+        }
         draw();
     }
 }

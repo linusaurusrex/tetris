@@ -8,12 +8,13 @@ public class Board {
     private Shape fallingShape;
 
     /**
-     * Returns whether the current piece can move in the given direction;
-     * @param direction
-     * @return
+     * Returns whether the current piece can move in the given direction.
      */
-    public boolean canMove(Pair direction) {
-        return false;
+    public boolean check(Shape shape) {
+        for (Pair square : shape)
+            if (!isValid(square) || getSquare(square) != null)
+                return false;
+        return true;
     }
 
     public void setSquare(Pair square, Color color) {

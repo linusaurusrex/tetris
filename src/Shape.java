@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Shape implements Iterable<Pair> {
+    // All possible configurations of 4 squares
     private static final List<List<Pair>> SHAPES = Arrays.asList(
             Arrays.asList( // Line
                     new Pair(0, 3),
@@ -49,6 +50,7 @@ public class Shape implements Iterable<Pair> {
                     new Pair(1, 5)
             )
     );
+    // Corresponding colors
     private static final List<Color> COLORS = Arrays.asList(
             Color.CYAN,
             Color.YELLOW,
@@ -58,35 +60,30 @@ public class Shape implements Iterable<Pair> {
             Color.ORANGE,
             Color.BLUE
             );
+    // Directions
     private static final Pair DOWN = new Pair(1, 0);
     private static final Pair LEFT = new Pair(0, -1);
     private static final Pair RIGHT = new Pair(0, 1);
     private List<Pair> squares;
+    private List<Pair> oldSquares;
     private Color color;
-    private Board board;
-    private Tetris tetris;
     private int i;
-    public boolean overlap = false;
-    public Shape(Board board, Tetris tetris) {
-        this.board = board;
-        this.tetris = tetris;
+    public Shape() {
         i = StdRandom.uniform(SHAPES.size());
-        squares = SHAPES.get(i);
-        if (!check(squares)) overlap = true;
         color = COLORS.get(i);
+        squares = SHAPES.get(i);
     }
 
     public void shift(Pair direction) {
-        List<Pair> newSquares = new ArrayList<Pair>();
-        for (Pair square : squares) newSquares.add(square.plus(direction));
-        if (check(newSquares)) squares = newSquares;
-        else if (direction.equals(DOWN)) tetris.settle();
+        oldSquares = squares;squares = new ArrayList<Pair>();
+        for (Pair square : oldSquares) squares.add(square.plus(direction));
     }
-    public void settle() {
-        for (Pair square : squares)
-            board.setSquare(square, color);
+    public void commitMove(boolean valid) {
+        if (!valid && oldSquares != null) squares = oldSquares;
     }
-    public void rotate() { if (1==1) return;
+
+    public void rotate() {
+        if (1 == 1) return;
         List<Pair> newSquares = new ArrayList<Pair>();
         //for (Pair square : squares) newSquares.add(square.plus(direction));
         if (i == 0) {
@@ -110,13 +107,6 @@ public class Shape implements Iterable<Pair> {
         if (i == 6) {
 
         }
-        if (check(newSquares)) squares = newSquares;
-    }
-    public boolean check(List<Pair> squares) {
-        for (Pair square : squares)
-            if (!board.isValid(square) || board.getSquare(square) != null)
-                return false;
-        return true;
     }
 
     @Override
