@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.*;
 
 public class BoardTest {
@@ -13,6 +15,7 @@ public class BoardTest {
         assertEquals(Color.RED, board.getSquare(square));
 
     }
+
     @Test
     void determinesWhenRowIsFullOrEmpty() {
         Board board = new Board();
@@ -40,7 +43,7 @@ public class BoardTest {
 
     @Test
     void determinesWhetherShapesOverlap() {
-        Shape shape = new Shape();
+        Shape shape = new Block();
         Board board = new Board();
         assertTrue(board.check(shape));
         board.setSquare(new Pair(0, 4), Color.RED);
@@ -50,24 +53,31 @@ public class BoardTest {
 
     @Test
     void correctlyHandlesEmptyAndFullRows() {
+        //TODO: improve names
         Board board = new Board();
-        board.setSquare(new Pair(17, 4), Color.RED);
-        for (int c = 0; c < 10; c++) {
-            board.setSquare(new Pair(18, c), Color.GREEN);
-            board.setSquare(new Pair(19, c), Color.BLUE);
+        int row0 = board.ROWS - 3;
+        int row1 = board.ROWS - 2;
+        int row2 = board.ROWS - 1;
+        // Fill in some rows
+        board.setSquare(new Pair(row0, 4), Color.RED);
+        for (int c = 0; c < Board.COLUMNS; c++) {
+            board.setSquare(new Pair(row1, c), Color.GREEN);
+            board.setSquare(new Pair(row2, c), Color.BLUE);
         }
+        // Check that full rows get cleared
         board.clear();
-        assertFalse(board.empty(17));
-        assertTrue(board.empty(18));
-        assertTrue(board.empty(19));
+        assertFalse(board.empty(row0));
+        assertTrue(board.empty(row1));
+        assertTrue(board.empty(row2));
+        // Check that rows drop
         board.clear();
-        assertTrue(board.empty(17));
-        assertFalse(board.empty(18));
-        assertTrue(board.empty(19));
+        assertTrue(board.empty(row0));
+        assertFalse(board.empty(row1));
+        assertTrue(board.empty(row2));
         board.clear();
-        assertTrue(board.empty(17));
-        assertTrue(board.empty(18));
-        assertFalse(board.empty(19));
+        assertTrue(board.empty(row0));
+        assertTrue(board.empty(row1));
+        assertFalse(board.empty(row2));
 
     }
 }

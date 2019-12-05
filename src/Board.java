@@ -2,8 +2,8 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class Board {
-    private static final int ROWS = 20;
-    private static final int COLUMNS = 10;
+    public static final int ROWS = 21;
+    public static final int COLUMNS = 10;
     private Color[][] board = new Color[ROWS][COLUMNS];
 
     /**

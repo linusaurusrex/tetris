@@ -1,7 +1,18 @@
-// From Lines of Action by Linus Brogan and Lauren Keegan
+// Mostly from Lines of Action by Linus Brogan and Lauren Keegan
 import java.util.Objects;
 
 public class Pair {
+    // Directions for graphics
+    public static final Pair ORIGIN = new Pair(0, 0);
+    public static final Pair UP = new Pair(-1, 0);
+    public static final Pair DOWN = new Pair(1, 0);
+    public static final Pair LEFT = new Pair(0, -1);
+    public static final Pair RIGHT = new Pair(0, 1);
+    public static final Pair UP_LEFT = new Pair(-1, -1);
+    public static final Pair UP_RIGHT = new Pair(-1, 1);
+    public static final Pair DOWN_LEFT = new Pair(1, -1);
+    public static final Pair DOWN_RIGHT = new Pair(1, 1);
+
     private int row;
     private int column;
 
