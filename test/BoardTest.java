@@ -35,17 +35,17 @@ public class BoardTest {
     @Test
     void determinesWhetherSquareIsValid() {
         Board board = new Board();
-        assertTrue(board.isValid(new Pair(3, 4)));
-        assertFalse(board.isValid(new Pair(3, 11)));
-        assertFalse(board.isValid(new Pair(21, 4)));
-        assertFalse(board.isValid(new Pair(21, -1)));
+        assertTrue(board.isValidLocatin(new Pair(3, 4)));
+        assertFalse(board.isValidLocatin(new Pair(3, 11)));
+        assertFalse(board.isValidLocatin(new Pair(21, 4)));
+        assertFalse(board.isValidLocatin(new Pair(21, -1)));
     }
 
     @Test
     void determinesWhetherShapesOverlap() {
-        Shape shape = new Block();
+        Tetromino tetromino = new Tetromino();
         Board board = new Board();
-        assertTrue(board.check(shape));
+        assertTrue(board.isInValidPosition(tetromino));
         board.setSquare(new Pair(0, 4), Color.RED);
         board.setSquare(new Pair(0, 3), Color.RED);
 

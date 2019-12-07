@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.Arrays;
 
 public class Board {
     public static final int ROWS = 21;
@@ -9,9 +8,9 @@ public class Board {
     /**
      * Returns whether the current piece is in a valid position.
      */
-    public boolean check(Shape shape) {
-        for (Pair square : shape)
-            if (!isValid(square) || getSquare(square) != null)
+    public boolean isInValidPosition(Tetromino tetromino) {
+        for (Pair square : tetromino)
+            if (!isValidLocatin(square) || getSquare(square) != null)
                 return false;
         return true;
     }
@@ -33,7 +32,7 @@ public class Board {
     /**
      * Returns whether the given square is in the grid.
      */
-    public boolean isValid(Pair square) {
+    public boolean isValidLocatin(Pair square) {
         int r = square.getRow();
         int c = square.getColumn();
         return r >= 0 && r < ROWS && c >= 0 && c < COLUMNS;

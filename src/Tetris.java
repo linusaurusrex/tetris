@@ -1,31 +1,41 @@
 // Linus Brogan, Thea Gordon-Wingfield, Lauren Keegan, Ena Zepcan
+// TODOS:
+// TIMER
+// SPEED UP
+// NEXT 3
+// GHOST
+// JANK
+// BRACES
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Tetris {
-    private static final double MAX = 21.5;
-    private static final double MIN = -0.5;
+    private Board board;
+    private Tetromino tetromino;
+    private int delay;
+    private boolean gameOver;
 
-    private boolean gameOver = false;
-    private int delay = 200;
-    private Board board = new Board();
-    private Shape shape = randomShape();
-
+    public Tetris() {
+        board = new Board();
+        tetromino = new Tetromino();
+        delay = 200;
+        gameOver = false;
+    }
     /**
      * Returns a random Shape.
      */
-    private Shape randomShape() {
-        int i = StdRandom.uniform(7);
-        i = StdRandom.uniform(4); // FOR DEV
-        if (i == 0) return new Block();
-        if (i == 1) return new T();
-        if (i == 2) return new Zig();
-        if (i == 3) return new Zag();
-        //if (i == 4) return new L();
-        //if (i == 5) return new ReverseL();
-        //if (i == 6) return new Bar();
-        return new Block();
+    private Tetromino randomShape() {
+        return new Tetromino();
+//        int i = StdRandom.uniform(7);
+//        if (i == 0) return new Block();
+//        if (i == 1) return new T();
+//        if (i == 2) return new Zig();
+//        if (i == 3) return new Zag();
+//        if (i == 4) return new L();
+//        if (i == 5) return new ReverseL();
+//        if (i == 6) return new Bar();
+//        return new Block();
     }
 
     /**
@@ -39,14 +49,14 @@ public class Tetris {
      * Sets the falling shape's final location in the board and sets the next falling shape.
      */
     public void settle() {
-        for (Pair square : shape)
-            board.setSquare(square, shape.getColor());
-        shape = null;
+        for (Pair square : tetromino)
+            board.setSquare(square, tetromino.getColor());
+        tetromino = null;
         draw();
         board.clear();
         StdDraw.pause(delay);
-        shape = randomShape();
-        if (!board.check(shape)) gameOver = true;
+        tetromino = randomShape();
+        if (!board.isInValidPosition(tetromino)) gameOver = true;
     }
 
     /**
@@ -55,17 +65,17 @@ public class Tetris {
     public void run() {
         StdDraw.enableDoubleBuffering();
         StdDraw.setScale(-0.5, 21.5); // Set scale
-        shape.shift(Pair.DOWN);
-        shape.shift(Pair.DOWN);
+        tetromino.shift(Pair.DOWN);
+        tetromino.shift(Pair.DOWN);
         while (!gameOver) {
             // TODO: Bump down every 10 loops, draw 10x more
             draw();
             StdDraw.pause(delay);
             board.clear();
             handleKeys();
-            shape.shift(Pair.DOWN);
-            boolean valid = board.check(shape);
-            shape.commitMove(valid);
+            tetromino.shift(Pair.DOWN);
+            boolean valid = board.isInValidPosition(tetromino);
+            tetromino.commitMove(valid);
             if (!valid) settle();
         }
         StdOut.println("OVER");
@@ -110,12 +120,12 @@ public class Tetris {
                 StdDraw.square(x, y, .5);
             }
         // Draw falling shape
-        if (shape != null)
-            for (Pair square : shape) {
+        if (tetromino != null)
+            for (Pair square : tetromino) {
                 int x = square.getColumn() + 1 + board.COLUMNS;
                 int y = board.ROWS - square.getRow();
                 if (y != board.ROWS) {
-                    StdDraw.setPenColor(shape.getColor());
+                    StdDraw.setPenColor(tetromino.getColor());
                     StdDraw.filledSquare(x, y, .5);
                     StdDraw.setPenColor();
                     StdDraw.square(x, y, 0.5);
@@ -131,27 +141,27 @@ public class Tetris {
      */
     void handleKeys() {
         if (StdDraw.isKeyPressed(KeyEvent.VK_UP)) {
-            shape.rotate();
-            shape.commitMove(board.check(shape));
+            tetromino.rotate();
+            tetromino.commitMove(board.isInValidPosition(tetromino));
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_LEFT)) {
-            shape.shift(Pair.LEFT);
-            shape.commitMove(board.check(shape));
+            tetromino.shift(Pair.LEFT);
+            tetromino.commitMove(board.isInValidPosition(tetromino));
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_DOWN)) {
-            shape.shift(Pair.DOWN);
-            boolean valid = board.check(shape);
-            shape.commitMove(valid);
+            tetromino.shift(Pair.DOWN);
+            boolean valid = board.isInValidPosition(tetromino);
+            tetromino.commitMove(valid);
             if (!valid) settle();
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            shape.shift(Pair.RIGHT);
-            shape.commitMove(board.check(shape));
+            tetromino.shift(Pair.RIGHT);
+            tetromino.commitMove(board.isInValidPosition(tetromino));
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE))
             for (int i = 0; i < board.ROWS; i++) {
-                shape.shift(Pair.DOWN);
-                shape.commitMove(board.check(shape));
+                tetromino.shift(Pair.DOWN);
+                tetromino.commitMove(board.isInValidPosition(tetromino));
             }
         draw();
     }
