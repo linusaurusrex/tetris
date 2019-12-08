@@ -9,9 +9,11 @@ public class Board {
      * Returns whether the current piece is in a valid position.
      */
     public boolean isInValidPosition(Tetromino tetromino) {
-        for (Pair square : tetromino)
-            if (!isValidLocatin(square) || getSquare(square) != null)
+        for (Pair square : tetromino) {
+            if (!isValidLocation(square) || getSquare(square) != null) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -32,7 +34,7 @@ public class Board {
     /**
      * Returns whether the given square is in the grid.
      */
-    public boolean isValidLocatin(Pair square) {
+    public boolean isValidLocation(Pair square) {
         int r = square.getRow();
         int c = square.getColumn();
         return r >= 0 && r < ROWS && c >= 0 && c < COLUMNS;
@@ -43,8 +45,9 @@ public class Board {
      */
     void clear() {
         for (int r = ROWS - 1; r > 0; r--) {
-            if (full(r)) board[r] = new Color[COLUMNS];
-            else if (empty(r)) {
+            if (full(r)) {
+                board[r] = new Color[COLUMNS];
+            } else if (empty(r)) {
                 board[r] = board[r - 1];
                 board[r - 1] = new Color[COLUMNS];
             }
@@ -55,9 +58,11 @@ public class Board {
      * Returns whether the given row is full.
      */
     public boolean full(int row) {
-        for (Color color : board[row])
-            if (color == null)
+        for (Color color : board[row]) {
+            if (color == null) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -65,9 +70,11 @@ public class Board {
      * Returns whether the given row is empty.
      */
     public boolean empty(int row) {
-        for (Color color : board[row])
-            if (color != null)
+        for (Color color : board[row]) {
+            if (color != null) {
                 return false;
+            }
+        }
         return true;
     }
 }

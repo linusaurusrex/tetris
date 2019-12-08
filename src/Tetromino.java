@@ -2,6 +2,25 @@ import java.awt.Color;
 import java.util.*;
 
 public class Tetromino implements Iterable<Pair> {
+    private static final List<Character> LETTERS = Arrays.asList('O', 'I', 'T', 'L', 'J', 'S', 'Z');
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        Tetromino pairs = (Tetromino) o;
+        return rotation == pairs.rotation &&
+                oldRotation == pairs.oldRotation &&
+                i == pairs.i &&
+                Objects.equals(center, pairs.center) &&
+                Objects.equals(oldCenter, pairs.oldCenter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(center, oldCenter, rotation, oldRotation, i);
+    }
+
     private static final List<Color> COLORS = Arrays.asList(
             Color.YELLOW, // O
             Color.CYAN, // I
@@ -10,7 +29,7 @@ public class Tetromino implements Iterable<Pair> {
             Color.BLUE, // J
             Color.GREEN, // S
             Color.RED // Z
-            );
+    );
     private static final List<List<List<Pair>>> ROTATIONS = Arrays.asList(
             Arrays.asList(
                     Arrays.asList( // O
@@ -178,20 +197,33 @@ public class Tetromino implements Iterable<Pair> {
             )
     );
 
+    /**
+     * Constructs a random Tetromino.
+     */
     public Tetromino() {
-        i = StdRandom.uniform(COLORS.size());
+        i = StdRandom.uniform(LETTERS.size());
+        center = new Pair(1, 4);
+        oldCenter = center;
     }
-    public Tetromino(int i) {
-        this.i = i % COLORS.size();
-    }
-    private Pair center = new Pair(1, 4);
-    private Pair oldCenter = center;
-    private int rotation = 0;
-    private int oldRotation = 0;
-    int i;
 
     /**
-     * Moves the shape in the given direction.
+     * Constructs the Tetromino matching the given letter or a pseudorandom Tetromino if no match is found.
+     */
+    public Tetromino(char shape) {
+        int i = LETTERS.indexOf(shape);
+        this.i = i != -1 ? i : shape % LETTERS.size();
+        center = new Pair(1, 4);
+        oldCenter = center;
+    }
+
+    private Pair center;
+    private Pair oldCenter;
+    private int rotation;
+    private int oldRotation;
+    private int i;
+
+    /**
+     * Moves in the given direction.
      */
     public void shift(Pair direction) {
         oldCenter = center;
@@ -199,17 +231,18 @@ public class Tetromino implements Iterable<Pair> {
     }
 
     /**
-     * Returns the Shape's location Pairs.
+     * Returns the four location Pairs.
      */
     public List<Pair> getSquares() {
-        List<Pair> squares =  new ArrayList<Pair>();
-        for (Pair offset : ROTATIONS.get(i).get(rotation))
+        List<Pair> squares = new ArrayList<Pair>();
+        for (Pair offset : ROTATIONS.get(i).get(rotation)) {
             squares.add(offset.plus(center));
+        }
         return squares;
     }
 
     /**
-     * Keeps move if valid. Restores previous position if not valid.
+     * Keeps current position if valid; restores previous position otherwise.
      */
     public void commitMove(boolean valid) {
         if (valid) {
@@ -223,13 +256,14 @@ public class Tetromino implements Iterable<Pair> {
     }
 
     /**
-     * Rotates the shape clockwise about its center.
+     * Rotates the tetromino clockwise about its center.
      */
     public void rotate() {
         oldRotation = rotation;
         rotation++;
         rotation %= ROTATIONS.get(i).size();
     }
+
     /**
      * Returns the color.
      */
@@ -237,8 +271,24 @@ public class Tetromino implements Iterable<Pair> {
         return COLORS.get(i);
     }
 
+    /**
+     * Returns an iterator for the location Pairs.
+     */
     @Override
     public Iterator<Pair> iterator() {
         return getSquares().iterator();
+    }
+
+    /**
+     * Returns a copy of `this`.
+     */
+    public Tetromino clone() {
+        Tetromino clone = new Tetromino();
+        clone.i = i;
+        clone.center = center;
+        clone.oldCenter = center;
+        clone.rotation = rotation;
+        clone.oldRotation = rotation;
+        return clone;
     }
 }
