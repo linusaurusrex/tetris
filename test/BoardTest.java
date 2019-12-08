@@ -55,31 +55,30 @@ public class BoardTest {
 
     @Test
     void correctlyHandlesEmptyAndFullRows() {
-        //TODO: improve names
         Board board = new Board();
-        int row0 = board.ROWS - 3;
+        int row2 = board.ROWS - 3;
         int row1 = board.ROWS - 2;
-        int row2 = board.ROWS - 1;
+        int row0 = board.ROWS - 1;
         // Fill in some rows
-        board.setSquare(new Pair(row0, 4), Color.RED);
+        board.setSquare(new Pair(row2, 4), Color.RED);
         for (int c = 0; c < Board.COLUMNS; c++) {
             board.setSquare(new Pair(row1, c), Color.GREEN);
-            board.setSquare(new Pair(row2, c), Color.BLUE);
+            board.setSquare(new Pair(row0, c), Color.BLUE);
         }
         // Check that full rows get cleared
         board.clear();
-        assertFalse(board.empty(row0));
+        assertFalse(board.empty(row2));
         assertTrue(board.empty(row1));
-        assertTrue(board.empty(row2));
+        assertTrue(board.empty(row0));
         // Check that rows drop
         board.clear();
-        assertTrue(board.empty(row0));
-        assertFalse(board.empty(row1));
         assertTrue(board.empty(row2));
-        board.clear();
+        assertFalse(board.empty(row1));
         assertTrue(board.empty(row0));
+        board.clear();
+        assertTrue(board.empty(row2));
         assertTrue(board.empty(row1));
-        assertFalse(board.empty(row2));
+        assertFalse(board.empty(row0));
 
     }
 }

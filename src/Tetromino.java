@@ -6,8 +6,12 @@ public class Tetromino implements Iterable<Pair> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
-        if (o == null || getClass() != o.getClass()) {return false;}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Tetromino pairs = (Tetromino) o;
         return rotation == pairs.rotation &&
                 oldRotation == pairs.oldRotation &&
@@ -226,7 +230,7 @@ public class Tetromino implements Iterable<Pair> {
      * Moves in the given direction.
      */
     public void shift(Pair direction) {
-        oldCenter = center;
+        //oldCenter = center;
         center = center.plus(direction);
     }
 
@@ -259,7 +263,7 @@ public class Tetromino implements Iterable<Pair> {
      * Rotates the tetromino clockwise about its center.
      */
     public void rotate() {
-        oldRotation = rotation;
+        //oldRotation = rotation;
         rotation++;
         rotation %= ROTATIONS.get(i).size();
     }
