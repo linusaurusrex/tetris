@@ -3,7 +3,14 @@ import java.awt.*;
 public class Board {
     public static final int ROWS = 21;
     public static final int COLUMNS = 10;
-    private Color[][] board = new Color[ROWS][COLUMNS];
+    private Color[][] board;
+
+    /**
+     * Constructs a new Board.
+     */
+    public Board() {
+        board = new Color[ROWS][COLUMNS];
+    }
 
     /**
      * Returns whether the current piece is in a valid position.

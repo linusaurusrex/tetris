@@ -9,7 +9,7 @@ public class TetrominoTest {
     @Test
     void clonesCorrectly() {
         Tetromino a = new Tetromino();
-        Tetromino b = a.clone();
+        Tetromino b = a.copy();
         assertEquals(a, b);
         assertNotSame(a, b);
     }

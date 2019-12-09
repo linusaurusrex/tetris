@@ -211,7 +211,7 @@ public class Tetromino implements Iterable<Pair> {
     }
 
     /**
-     * Constructs the Tetromino matching the given letter or a pseudorandom Tetromino if no match is found.
+     * Constructs the Tetromino matching the given letter or an arbitrary Tetromino if no match is found.
      */
     public Tetromino(char shape) {
         int i = LETTERS.indexOf(shape);
@@ -230,7 +230,6 @@ public class Tetromino implements Iterable<Pair> {
      * Moves in the given direction.
      */
     public void shift(Pair direction) {
-        //oldCenter = center;
         center = center.plus(direction);
     }
 
@@ -250,7 +249,6 @@ public class Tetromino implements Iterable<Pair> {
      */
     public void commitMove(boolean valid) {
         if (valid) {
-            // TODO: Is this part necessary? Think about it.
             oldCenter = center;
             oldRotation = rotation;
         } else {
@@ -263,7 +261,6 @@ public class Tetromino implements Iterable<Pair> {
      * Rotates the tetromino clockwise about its center.
      */
     public void rotate() {
-        //oldRotation = rotation;
         rotation++;
         rotation %= ROTATIONS.get(i).size();
     }
@@ -286,7 +283,7 @@ public class Tetromino implements Iterable<Pair> {
     /**
      * Returns a copy of `this`.
      */
-    public Tetromino clone() {
+    public Tetromino copy() {
         Tetromino clone = new Tetromino();
         clone.i = i;
         clone.center = center;

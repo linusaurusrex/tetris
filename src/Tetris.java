@@ -1,5 +1,5 @@
 // Linus Brogan, Thea Gordon-Wingfield, Lauren Keegan, Ena Zepcan
-// TODO: refactor and reorganize, have peter play, tests for new methods, prettify sidebar
+// TODO: refactor and reorganize, tests for new methods
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Queue;
@@ -39,13 +39,14 @@ public class Tetris {
      * Sets the falling shape's final location in the board and sets the next falling shape.
      */
     public void settle() {
-        handleKeys();
         for (int i = 0; i < board.ROWS; i++) {
             tetromino.shift(Pair.DOWN);
             tetromino.commitMove(board.isInValidPosition(tetromino));
         }
-        for (Pair square : tetromino) {
-            board.setSquare(square, tetromino.getColor());
+        if (board.isInValidPosition(tetromino)) {
+            for (Pair square : tetromino) {
+                board.setSquare(square, tetromino.getColor());
+            }
         }
         tetromino = null;
         draw();
@@ -82,6 +83,7 @@ public class Tetris {
                 boolean valid = board.isInValidPosition(tetromino);
                 tetromino.commitMove(valid);
                 if (!valid) {
+                    handleKeys();
                     settle();
                 }
             }
@@ -110,13 +112,18 @@ public class Tetris {
     public void draw() {
         StdDraw.clear();
         // Draw score
-        StdDraw.text(4.5, 20, "Score: " + (System.currentTimeMillis() - start) / 1000);
-        // Draw next 3 shapes
-        StdDraw.setPenColor(Color.DARK_GRAY);
-        StdDraw.filledRectangle(4.5, 13.5, 3, 5);
+        StdDraw.setPenColor(StdDraw.BOOK_RED);
+        StdDraw.filledRectangle(4.5, 20, 5, 1.5);
         StdDraw.setPenColor(Color.WHITE);
-        StdDraw.text(4.5, 18, "Next 3:");
-        int top = 17;
+        StdDraw.text(4.5, 20, "Time: " + (System.currentTimeMillis() - start) / 1000);
+        // Draw next 3 shapes
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        StdDraw.filledRectangle(4.5, 12, 5, 6.5);
+        StdDraw.setPenColor(Color.DARK_GRAY);
+        StdDraw.filledRectangle(4.5, 11.5, 3, 5);
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.text(4.5, 17.5, "Next 3:");
+        int top = 15;
         for (Tetromino tetromino : nextTetrominos) {
             for (Pair square : tetromino) {
                 double x = square.getColumn() + 0.5;
@@ -131,13 +138,13 @@ public class Tetris {
 
         // Draw help
         StdDraw.setPenColor(Color.YELLOW);
-        StdDraw.filledRectangle(4.5, 3, 5, 3.5);
+        StdDraw.filledRectangle(4.5, 2.5, 5, 3);
         StdDraw.setPenColor();
-        StdDraw.text(4.5, 5, "HELP:");
-        StdDraw.text(4.5, 4, "Left, right, down: move");
-        StdDraw.text(4.5, 3, "Up: rotate");
-        StdDraw.text(4.5, 2, "Space: drop all the way down");
-        StdDraw.text(4.5, 1, "P: pause, Q: quit, R: restart");
+        StdDraw.text(4.5, 4.5, "HELP:");
+        StdDraw.text(4.5, 3.5, "Left, right, down: move");
+        StdDraw.text(4.5, 2.5, "Up: rotate");
+        StdDraw.text(4.5, 1.5, "Space: drop all the way down");
+        StdDraw.text(4.5, 0.5, "P: pause, Q: quit, R: restart");
 
         // Draw main board
         StdDraw.setPenColor(Color.DARK_GRAY);
@@ -160,8 +167,8 @@ public class Tetris {
         }
 
         // Draw ghost and falling shape
-        if (tetromino != null) {
-            Tetromino ghost = tetromino.clone();
+        if (tetromino != null && board.isInValidPosition(tetromino)) {
+            Tetromino ghost = tetromino.copy();
             for (int i = 0; i < 20; i++) {
                 ghost.shift(Pair.DOWN);
                 ghost.commitMove(board.isInValidPosition(ghost));
@@ -217,13 +224,10 @@ public class Tetris {
             tetromino.commitMove(board.isInValidPosition(tetromino));
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) {
-            keyPress = System.currentTimeMillis();
-            for (int i = 0; i < board.ROWS; i++) {
-                tetromino.shift(Pair.DOWN);
-                tetromino.commitMove(board.isInValidPosition(tetromino));
-            }
+            settle();
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
+            StdDraw.pause(200);
             main(null);
         }
         if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) {
@@ -236,6 +240,9 @@ public class Tetris {
             }
             while (!StdDraw.isKeyPressed(KeyEvent.VK_P)) {
                 // Wait for key down
+            }
+            while (StdDraw.isKeyPressed(KeyEvent.VK_P)) {
+                // Wait for key up
             }
             start += System.currentTimeMillis() - offset;
         }
