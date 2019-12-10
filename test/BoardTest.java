@@ -70,7 +70,7 @@ public class BoardTest {
         assertFalse(board.empty(row2));
         assertTrue(board.empty(row1));
         assertTrue(board.empty(row0));
-        // Check that rows drop
+        // Check that rows drop properly
         board.clear();
         assertTrue(board.empty(row2));
         assertFalse(board.empty(row1));

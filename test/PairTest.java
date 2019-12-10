@@ -1,4 +1,4 @@
-// From Lines of Action by Linus Brogan and Lauren Keegan
+// Mostly from Lines of Action by Linus Brogan and Lauren Keegan
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,9 +40,9 @@ public class PairTest {
 
     @Test
     public void equalsWorks() {
-        Pair pair = new Pair(3, 5);
-        Pair pair2 = new Pair(3, 5);
-        assertEquals(pair, pair2);
+        Pair a = new Pair(3, 5);
+        Pair b = new Pair(3, 5);
+        assertEquals(a, b);
     }
 
 }

@@ -13,15 +13,10 @@ public class Board {
     }
 
     /**
-     * Returns whether the current piece is in a valid position.
+     * Returns the requested square from the grid.
      */
-    public boolean isInValidPosition(Tetromino tetromino) {
-        for (Pair square : tetromino) {
-            if (!isValidLocation(square) || getSquare(square) != null) {
-                return false;
-            }
-        }
-        return true;
+    public Color getSquare(Pair square) {
+        return board[square.getRow()][square.getColumn()];
     }
 
     /**
@@ -29,13 +24,6 @@ public class Board {
      */
     public void setSquare(Pair square, Color color) {
         board[square.getRow()][square.getColumn()] = color;
-    }
-
-    /**
-     * Returns the requested square from the grid.
-     */
-    public Color getSquare(Pair square) {
-        return board[square.getRow()][square.getColumn()];
     }
 
     /**
@@ -48,17 +36,15 @@ public class Board {
     }
 
     /**
-     * Clears full rows and shifts rows down to fill empty rows.
+     * Returns whether the current piece is in a valid position.
      */
-    void clear() {
-        for (int r = ROWS - 1; r > 0; r--) {
-            if (full(r)) {
-                board[r] = new Color[COLUMNS];
-            } else if (empty(r)) {
-                board[r] = board[r - 1];
-                board[r - 1] = new Color[COLUMNS];
+    public boolean isInValidPosition(Tetromino tetromino) {
+        for (Pair square : tetromino) {
+            if (!isValidLocation(square) || getSquare(square) != null) {
+                return false;
             }
         }
+        return true;
     }
 
     /**
@@ -83,5 +69,19 @@ public class Board {
             }
         }
         return true;
+    }
+
+    /**
+     * Clears full rows and shifts rows down to fill empty rows.
+     */
+    void clear() {
+        for (int r = ROWS - 1; r > 0; r--) {
+            if (full(r)) {
+                board[r] = new Color[COLUMNS];
+            } else if (empty(r)) {
+                board[r] = board[r - 1];
+                board[r - 1] = new Color[COLUMNS];
+            }
+        }
     }
 }

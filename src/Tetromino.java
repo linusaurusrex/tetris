@@ -3,28 +3,6 @@ import java.util.*;
 
 public class Tetromino implements Iterable<Pair> {
     private static final List<Character> LETTERS = Arrays.asList('O', 'I', 'T', 'L', 'J', 'S', 'Z');
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Tetromino pairs = (Tetromino) o;
-        return rotation == pairs.rotation &&
-                oldRotation == pairs.oldRotation &&
-                i == pairs.i &&
-                Objects.equals(center, pairs.center) &&
-                Objects.equals(oldCenter, pairs.oldCenter);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(center, oldCenter, rotation, oldRotation, i);
-    }
-
     private static final List<Color> COLORS = Arrays.asList(
             Color.YELLOW, // O
             Color.CYAN, // I
@@ -34,6 +12,7 @@ public class Tetromino implements Iterable<Pair> {
             Color.GREEN, // S
             Color.RED // Z
     );
+    // All possible rotational states for each tetromino
     private static final List<List<List<Pair>>> ROTATIONS = Arrays.asList(
             Arrays.asList(
                     Arrays.asList( // O
@@ -201,6 +180,12 @@ public class Tetromino implements Iterable<Pair> {
             )
     );
 
+    private Pair center;
+    private Pair oldCenter;
+    private int rotation;
+    private int oldRotation;
+    private int i;
+
     /**
      * Constructs a random Tetromino.
      */
@@ -220,17 +205,11 @@ public class Tetromino implements Iterable<Pair> {
         oldCenter = center;
     }
 
-    private Pair center;
-    private Pair oldCenter;
-    private int rotation;
-    private int oldRotation;
-    private int i;
-
     /**
-     * Moves in the given direction.
+     * Returns the color.
      */
-    public void shift(Pair direction) {
-        center = center.plus(direction);
+    public Color getColor() {
+        return COLORS.get(i);
     }
 
     /**
@@ -242,6 +221,21 @@ public class Tetromino implements Iterable<Pair> {
             squares.add(offset.plus(center));
         }
         return squares;
+    }
+
+    /**
+     * Moves in the given direction.
+     */
+    public void shift(Pair direction) {
+        center = center.plus(direction);
+    }
+
+    /**
+     * Rotates the tetromino clockwise about its center.
+     */
+    public void rotate() {
+        rotation++;
+        rotation %= ROTATIONS.get(i).size();
     }
 
     /**
@@ -258,29 +252,6 @@ public class Tetromino implements Iterable<Pair> {
     }
 
     /**
-     * Rotates the tetromino clockwise about its center.
-     */
-    public void rotate() {
-        rotation++;
-        rotation %= ROTATIONS.get(i).size();
-    }
-
-    /**
-     * Returns the color.
-     */
-    public Color getColor() {
-        return COLORS.get(i);
-    }
-
-    /**
-     * Returns an iterator for the location Pairs.
-     */
-    @Override
-    public Iterator<Pair> iterator() {
-        return getSquares().iterator();
-    }
-
-    /**
      * Returns a copy of `this`.
      */
     public Tetromino copy() {
@@ -292,4 +263,34 @@ public class Tetromino implements Iterable<Pair> {
         clone.oldRotation = rotation;
         return clone;
     }
+
+    /**
+     * Returns an iterator for the location Pairs.
+     */
+    @Override
+    public Iterator<Pair> iterator() {
+        return getSquares().iterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tetromino pairs = (Tetromino) o;
+        return rotation == pairs.rotation &&
+                oldRotation == pairs.oldRotation &&
+                i == pairs.i &&
+                Objects.equals(center, pairs.center) &&
+                Objects.equals(oldCenter, pairs.oldCenter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(center, oldCenter, rotation, oldRotation, i);
+    }
+
 }

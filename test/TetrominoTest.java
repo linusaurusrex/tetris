@@ -7,6 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TetrominoTest {
     @Test
+    void gettersWork() {
+        Tetromino tetromino = new Tetromino('T');
+        assertEquals(Color.MAGENTA, tetromino.getColor());
+        List<Pair> squares = Arrays.asList(
+                new Pair(0, 4),
+                new Pair(1, 3),
+                new Pair(1, 4),
+                new Pair(1, 5)
+        );
+        assertEquals(squares, tetromino.getSquares());
+    }
+
+    @Test
     void clonesCorrectly() {
         Tetromino a = new Tetromino();
         Tetromino b = a.copy();
@@ -27,22 +40,6 @@ public class TetrominoTest {
     }
 
     @Test
-    void commitsMoveCorrectly() {
-        Tetromino tetromino = new Tetromino();
-        List<Pair> squares = tetromino.getSquares();
-        tetromino.shift(Pair.RIGHT);
-        tetromino.rotate();
-        List<Pair> newSquares = tetromino.getSquares();
-        tetromino.commitMove(false);
-        assertEquals(squares, tetromino.getSquares());
-        tetromino.shift(Pair.RIGHT);
-        tetromino.rotate();
-        tetromino.commitMove(true);
-        assertEquals(newSquares, tetromino.getSquares());
-
-    }
-
-    @Test
     void rotatesCorrectly() {
         Tetromino tetromino = new Tetromino('T');
         tetromino.rotate();
@@ -56,15 +53,18 @@ public class TetrominoTest {
     }
 
     @Test
-    void gettersWork() {
-        Tetromino tetromino = new Tetromino('T');
-        assertEquals(Color.MAGENTA, tetromino.getColor());
-        List<Pair> squares = Arrays.asList(
-                new Pair(0, 4),
-                new Pair(1, 3),
-                new Pair(1, 4),
-                new Pair(1, 5)
-        );
+    void commitsMoveCorrectly() {
+        Tetromino tetromino = new Tetromino();
+        List<Pair> squares = tetromino.getSquares();
+        tetromino.shift(Pair.RIGHT);
+        tetromino.rotate();
+        List<Pair> newSquares = tetromino.getSquares();
+        tetromino.commitMove(false);
         assertEquals(squares, tetromino.getSquares());
+        tetromino.shift(Pair.RIGHT);
+        tetromino.rotate();
+        tetromino.commitMove(true);
+        assertEquals(newSquares, tetromino.getSquares());
+
     }
 }
