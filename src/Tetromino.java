@@ -255,13 +255,13 @@ public class Tetromino implements Iterable<Pair> {
      * Returns a copy of `this`.
      */
     public Tetromino copy() {
-        Tetromino clone = new Tetromino();
-        clone.i = i;
-        clone.center = center;
-        clone.oldCenter = center;
-        clone.rotation = rotation;
-        clone.oldRotation = rotation;
-        return clone;
+        Tetromino copy = new Tetromino();
+        copy.i = i;
+        copy.center = center;
+        copy.oldCenter = center;
+        copy.rotation = rotation;
+        copy.oldRotation = rotation;
+        return copy;
     }
 
     /**

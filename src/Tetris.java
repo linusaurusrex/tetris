@@ -15,7 +15,7 @@ public class Tetris {
     private long lastKeyPressTime;
 
     /**
-     * Construct a new game.
+     * Constructs a new game.
      */
     public Tetris() {
         board = new Board();
@@ -42,6 +42,7 @@ public class Tetris {
         int loops = 0;
         int loopsBeforeFall = 10;
         startTime = System.currentTimeMillis();
+
         draw();
         while (!gameOver) {
             StdDraw.pause(DELAY);
@@ -66,6 +67,7 @@ public class Tetris {
             }
             loops++;
         }
+
         // Draw Game Over
         StdDraw.setPenColor(Color.YELLOW);
         StdDraw.filledRectangle(15.5, 10.5, 3, 1.5);
@@ -92,16 +94,16 @@ public class Tetris {
             tetromino.shift(Pair.DOWN);
             tetromino.commitMove(board.isInValidPosition(tetromino));
         }
-        // Move into board
+        // Copy into board
         if (board.isInValidPosition(tetromino)) {
             for (Pair square : tetromino) {
                 board.setSquare(square, tetromino.getColor());
             }
         }
-
         draw();
         StdDraw.pause(DELAY * 10);
         board.clear();
+
         tetromino = nextTetrominos.remove();
         nextTetrominos.add(new Tetromino());
         if (!board.isInValidPosition(tetromino)) {
@@ -150,7 +152,7 @@ public class Tetris {
         StdDraw.text(4.5, 3.5, "Left, right, down: move");
         StdDraw.text(4.5, 2.5, "Up: rotate");
         StdDraw.text(4.5, 1.5, "Space: drop all the way down");
-        StdDraw.text(4.5, 0.5, "P: pause, Q: quit, R: restart");
+        StdDraw.text(4.5, 0.5, "P: (un)pause, Q: quit, R: restart");
 
         // Draw main board
         StdDraw.setPenColor(Color.DARK_GRAY);
@@ -179,21 +181,22 @@ public class Tetris {
                 shadow.shift(Pair.DOWN);
                 shadow.commitMove(board.isInValidPosition(shadow));
             }
-            StdDraw.setPenColor(Color.GRAY);
             for (Pair square : shadow) {
                 int x = square.getColumn() + 11;
                 int y = board.ROWS - square.getRow();
                 if (y != board.ROWS) {
+                    StdDraw.setPenColor(Color.GRAY);
                     StdDraw.filledSquare(x, y, .5);
                     StdDraw.setPenColor();
                     StdDraw.square(x, y, 0.5);
                 }
-            } // TODO: Remove extra top row from grid
-            StdDraw.setPenColor(tetromino.getColor());
+            }
+
             for (Pair square : tetromino) {
                 int x = square.getColumn() + 11;
                 int y = board.ROWS - square.getRow();
                 if (y != board.ROWS) {
+                    StdDraw.setPenColor(tetromino.getColor());
                     StdDraw.filledSquare(x, y, .5);
                     StdDraw.setPenColor();
                     StdDraw.square(x, y, 0.5);
