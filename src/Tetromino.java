@@ -1,4 +1,5 @@
-import java.awt.Color;
+import java.awt.*;
+import java.util.List;
 import java.util.*;
 
 public class Tetromino implements Iterable<Pair> {
@@ -217,9 +218,8 @@ public class Tetromino implements Iterable<Pair> {
      */
     public List<Pair> getSquares() {
         List<Pair> squares = new ArrayList<Pair>();
-        for (Pair offset : ROTATIONS.get(i).get(rotation)) {
+        for (Pair offset : ROTATIONS.get(i).get(rotation))
             squares.add(offset.plus(center));
-        }
         return squares;
     }
 
@@ -274,12 +274,10 @@ public class Tetromino implements Iterable<Pair> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (this == o)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass() != o.getClass())
             return false;
-        }
         Tetromino pairs = (Tetromino) o;
         return rotation == pairs.rotation &&
                 oldRotation == pairs.oldRotation &&

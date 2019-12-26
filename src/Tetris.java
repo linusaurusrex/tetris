@@ -1,4 +1,3 @@
-// Linus Brogan, Thea Gordon-Wingfield, Lauren Keegan, Ena Zepcan
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Queue;
@@ -6,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tetris {
     private static final int DELAY = 20;
-    
+
     private Board board;
     private Tetromino tetromino;
     private boolean gameOver;
@@ -21,9 +20,8 @@ public class Tetris {
         board = new Board();
         tetromino = new Tetromino();
         nextTetrominos = new LinkedBlockingQueue<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
             nextTetrominos.add(new Tetromino());
-        }
     }
 
     /**
@@ -46,13 +44,9 @@ public class Tetris {
         draw();
         while (!gameOver) {
             StdDraw.pause(DELAY);
-            if (System.currentTimeMillis() - lastKeyPressTime > 150) {
-                handleKeys();
-            }
+            if (System.currentTimeMillis() - lastKeyPressTime > 150) handleKeys();
             // Speed up
-            if (loops % 1000 == 0 && loopsBeforeFall > 3) {
-                loopsBeforeFall--;
-            }
+            if (loops % 1000 == 0 && loopsBeforeFall > 3) loopsBeforeFall--;
             // Drop tetrominos
             if (loops % loopsBeforeFall == 0) {
                 board.clear();
@@ -75,14 +69,9 @@ public class Tetris {
         StdDraw.rectangle(15.5, 10.5, 3, 1.5);
         StdDraw.text(15.5, 10.5, "Game Over!");
         StdDraw.show();
-        while (true) {
-            if (StdDraw.isKeyPressed(KeyEvent.VK_R)) {
-                main(null);
-            }
-            if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) {
-                System.exit(0);
-            }
-        }
+        while (true)
+            if (StdDraw.isKeyPressed(KeyEvent.VK_R)) main(null);
+            else if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) System.exit(0);
     }
 
     /**
@@ -95,20 +84,16 @@ public class Tetris {
             tetromino.commitMove(board.isInValidPosition(tetromino));
         }
         // Copy into board
-        if (board.isInValidPosition(tetromino)) {
-            for (Pair square : tetromino) {
+        if (board.isInValidPosition(tetromino))
+            for (Pair square : tetromino)
                 board.setSquare(square, tetromino.getColor());
-            }
-        }
         draw();
         StdDraw.pause(DELAY * 10);
         board.clear();
 
         tetromino = nextTetrominos.remove();
         nextTetrominos.add(new Tetromino());
-        if (!board.isInValidPosition(tetromino)) {
-            gameOver = true;
-        }
+        if (!board.isInValidPosition(tetromino)) gameOver = true;
         draw();
     }
 
@@ -159,7 +144,7 @@ public class Tetris {
         StdDraw.filledRectangle(15.5, 10.5, 6, 11);
 
         // Draw settled shapes
-        for (int r = 1; r < board.ROWS; r++) {
+        for (int r = 1; r < board.ROWS; r++)
             for (int c = 0; c < board.COLUMNS; c++) {
                 Pair here = new Pair(r, c);
                 int x = c + 11;
@@ -172,7 +157,6 @@ public class Tetris {
                 StdDraw.setPenColor();
                 StdDraw.square(x, y, .5);
             }
-        }
 
         // Draw falling tetromino and shadow
         if (board.isInValidPosition(tetromino)) {
@@ -240,9 +224,7 @@ public class Tetris {
             StdDraw.pause(DELAY * 10);
             main(null);
         }
-        if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) {
-            System.exit(0);
-        }
+        if (StdDraw.isKeyPressed(KeyEvent.VK_Q)) System.exit(0);
         if (StdDraw.isKeyPressed(KeyEvent.VK_P)) {
             long offset = System.currentTimeMillis();
             while (StdDraw.isKeyPressed(KeyEvent.VK_P)) {

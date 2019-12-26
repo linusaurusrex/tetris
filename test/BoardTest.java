@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.awt.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
 
@@ -22,14 +22,12 @@ public class BoardTest {
         assertTrue(board.empty(4));
         assertFalse(board.full(4));
         int c = 0;
-        for (; c < 5; c++) {
+        for (; c < 5; c++)
             board.setSquare(new Pair(4, c), Color.RED);
-        }
         assertFalse(board.empty(4));
         assertFalse(board.full(4));
-        for (; c < 10; c++) {
+        for (; c < 10; c++)
             board.setSquare(new Pair(4, c), Color.GREEN);
-        }
         assertFalse(board.empty(4));
         assertTrue(board.full(4));
     }

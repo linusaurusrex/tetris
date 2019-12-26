@@ -3,14 +3,7 @@ import java.awt.*;
 public class Board {
     public static final int ROWS = 21;
     public static final int COLUMNS = 10;
-    private Color[][] board;
-
-    /**
-     * Constructs a new Board.
-     */
-    public Board() {
-        board = new Color[ROWS][COLUMNS];
-    }
+    private Color[][] board = new Color[ROWS][COLUMNS];
 
     /**
      * Returns the requested square from the grid.
@@ -39,11 +32,9 @@ public class Board {
      * Returns whether the current piece is in a valid position.
      */
     public boolean isInValidPosition(Tetromino tetromino) {
-        for (Pair square : tetromino) {
-            if (!isValidLocation(square) || getSquare(square) != null) {
+        for (Pair square : tetromino)
+            if (!isValidLocation(square) || getSquare(square) != null)
                 return false;
-            }
-        }
         return true;
     }
 
@@ -51,11 +42,9 @@ public class Board {
      * Returns whether the given row is full.
      */
     public boolean full(int row) {
-        for (Color color : board[row]) {
-            if (color == null) {
+        for (Color color : board[row])
+            if (color == null)
                 return false;
-            }
-        }
         return true;
     }
 
@@ -63,11 +52,9 @@ public class Board {
      * Returns whether the given row is empty.
      */
     public boolean empty(int row) {
-        for (Color color : board[row]) {
-            if (color != null) {
+        for (Color color : board[row])
+            if (color != null)
                 return false;
-            }
-        }
         return true;
     }
 
@@ -75,13 +62,11 @@ public class Board {
      * Clears full rows and shifts rows down to fill empty rows.
      */
     void clear() {
-        for (int r = ROWS - 1; r > 0; r--) {
-            if (full(r)) {
-                board[r] = new Color[COLUMNS];
-            } else if (empty(r)) {
+        for (int r = ROWS - 1; r > 0; r--)
+            if (full(r)) board[r] = new Color[COLUMNS];
+            else if (empty(r)) {
                 board[r] = board[r - 1];
                 board[r - 1] = new Color[COLUMNS];
             }
-        }
     }
 }

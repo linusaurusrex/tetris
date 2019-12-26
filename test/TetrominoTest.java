@@ -3,7 +3,9 @@ import org.junit.jupiter.api.Test;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 public class TetrominoTest {
     @Test
@@ -34,9 +36,8 @@ public class TetrominoTest {
         tetromino.shift(Pair.RIGHT);
         List<Pair> newSquares = tetromino.getSquares();
         assertEquals(squares.size(), newSquares.size());
-        for (int i = 0; i < squares.size(); i++) {
+        for (int i = 0; i < squares.size(); i++)
             assertEquals(squares.get(i).plus(Pair.RIGHT), newSquares.get(i));
-        }
     }
 
     @Test
