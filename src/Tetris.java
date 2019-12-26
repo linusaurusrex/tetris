@@ -11,6 +11,7 @@ public class Tetris {
     private boolean gameOver;
     private Queue<Tetromino> nextTetrominos;
     private long startTime;
+    private long score;
     private long lastKeyPressTime;
 
     /**
@@ -49,7 +50,7 @@ public class Tetris {
             if (loops % 1000 == 0 && loopsBeforeFall > 3) loopsBeforeFall--;
             // Drop tetrominos
             if (loops % loopsBeforeFall == 0) {
-                board.clear();
+                score += Math.pow(board.clear(), 2) * 25;
                 tetromino.shift(Pair.DOWN);
                 boolean valid = board.isInValidPosition(tetromino);
                 tetromino.commitMove(valid);
@@ -89,8 +90,7 @@ public class Tetris {
                 board.setSquare(square, tetromino.getColor());
         draw();
         StdDraw.pause(DELAY * 10);
-        board.clear();
-
+        score += Math.pow(board.clear(), 2) * 50 + 10;
         tetromino = nextTetrominos.remove();
         nextTetrominos.add(new Tetromino());
         if (!board.isInValidPosition(tetromino)) gameOver = true;
@@ -107,7 +107,7 @@ public class Tetris {
         StdDraw.setPenColor(StdDraw.BOOK_RED);
         StdDraw.filledRectangle(4.5, 20, 5, 1.5);
         StdDraw.setPenColor(Color.WHITE);
-        StdDraw.text(4.5, 20, "Time: " + (System.currentTimeMillis() - startTime) / 1000);
+        StdDraw.text(4.5, 20, "Score: " + (score + (System.currentTimeMillis() - startTime) / 1000));
 
         // Draw next 3 shapes
         StdDraw.setPenColor(StdDraw.BOOK_BLUE);

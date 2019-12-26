@@ -59,14 +59,18 @@ public class Board {
     }
 
     /**
-     * Clears full rows and shifts rows down to fill empty rows.
+     * Clears full rows and shifts rows down to fill empty rows. Returns the number of full rows cleared.
      */
-    void clear() {
+    int clear() {
+        int clearedRows = 0;
         for (int r = ROWS - 1; r > 0; r--)
-            if (full(r)) board[r] = new Color[COLUMNS];
-            else if (empty(r)) {
+            if (full(r)) {
+                board[r] = new Color[COLUMNS];
+                clearedRows++;
+            } else if (empty(r)) {
                 board[r] = board[r - 1];
                 board[r - 1] = new Color[COLUMNS];
             }
+        return clearedRows;
     }
 }

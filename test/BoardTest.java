@@ -64,16 +64,16 @@ public class BoardTest {
             board.setSquare(new Pair(row0, c), Color.BLUE);
         }
         // Check that full rows get cleared
-        board.clear();
+        assertEquals(2, board.clear());
         assertFalse(board.empty(row2));
         assertTrue(board.empty(row1));
         assertTrue(board.empty(row0));
         // Check that rows drop properly
-        board.clear();
+        assertEquals(0, board.clear());
         assertTrue(board.empty(row2));
         assertFalse(board.empty(row1));
         assertTrue(board.empty(row0));
-        board.clear();
+        assertEquals(0, board.clear());
         assertTrue(board.empty(row2));
         assertTrue(board.empty(row1));
         assertFalse(board.empty(row0));
